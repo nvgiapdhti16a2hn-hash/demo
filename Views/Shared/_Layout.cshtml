@@ -15,6 +15,7 @@
             {
                 <a asp-controller="HocVien" asp-action="Sua">Hồ sơ cá nhân</a>
                 <a asp-controller="HoSoDangKyHoc" asp-action="CuaToi">Hồ sơ đăng ký</a>
+                <a asp-controller="ThongBao" asp-action="Index">Thông báo</a>
             }
             @if (Context.Session.GetString("AccountRole") is nameof(VaiTro.Admin) or nameof(VaiTro.NhanVienDaoTao))
             {

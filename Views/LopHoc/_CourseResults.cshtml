@@ -1,0 +1,43 @@
+@model CourseListViewModel
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Lớp học</th><th>Chương trình</th><th>Trình độ</th><th>Sĩ số tối đa</th><th>Hạn đăng ký</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var item in Model.LopHocs)
+        {
+            <tr>
+                <td>@item.TenLop</td><td>@item.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td>
+                <td>@item.TrinhDoDauVao</td><td>@item.SiSoToiDa</td><td>@item.HanDangKy.ToString("dd/MM/yyyy")</td>
+                <td><span class="badge">@item.TrangThai.ToDisplayName()</span>@(item.HanDangKy.Date < DateTime.Today ? " · Hết hạn" : " · Còn hạn")</td>
+                <td><a asp-action="Details" asp-route-id="@item.MaLop">Chi tiết</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+@if (Model.LopHocs.Count == 0)
+{
+    <p class="muted">Không tìm thấy lớp phù hợp.</p>
+}
+<div class="pagination">
+    @if (Model.TrangHienTai > 1)
+    {
+        <a class="button secondary" asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@(Model.TrangHienTai - 1)">Trang trước</a>
+    }
+    @foreach (var pageNumber in Model.SoTrang)
+    {
+        if (pageNumber == Model.TrangHienTai)
+        {
+            <strong>@pageNumber</strong>
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@pageNumber">@pageNumber</a>
+        }
+    }
+    <span>Trang @Model.TrangHienTai / @Model.TongSoTrang</span>
+    @if (Model.TrangHienTai < Model.TongSoTrang)
+    {
+        <a class="button secondary" asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@(Model.TrangHienTai + 1)">Trang sau</a>
+    }
+</div>

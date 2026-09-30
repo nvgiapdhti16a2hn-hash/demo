@@ -7,7 +7,10 @@ using QuanLyKhoaHoc.ViewModels;
 
 namespace QuanLyKhoaHoc.Controllers;
 
-public class TiepNhanHoSoController(AppDbContext db, CurrentUser currentUser) : AppController(currentUser)
+public class TiepNhanHoSoController(
+    AppDbContext db,
+    CurrentUser currentUser,
+    ThongBaoService thongBaoService) : AppController(currentUser)
 {
     public async Task<IActionResult> Index(
         string? tuKhoa,
@@ -105,6 +108,11 @@ public class TiepNhanHoSoController(AppDbContext db, CurrentUser currentUser) : 
             : TrangThaiHoSo.KhongDuDieuKien;
         application.NgayXuLy = DateTime.Now;
         application.NhanXetXetDuyet = model.NhanXet.Trim();
+        var statusText = application.TrangThai.ToDisplayName();
+        await thongBaoService.TaoChoHocVienAsync(
+            application.MaHoSo,
+            "Hồ sơ đã được xét duyệt",
+            $"Hồ sơ đăng ký lớp {application.LopHoc.TenLop} đã chuyển sang trạng thái: {statusText}.");
         await db.SaveChangesAsync();
         TempData["Success"] = "Đã lưu kết quả xét duyệt.";
         return RedirectToAction(nameof(Index));

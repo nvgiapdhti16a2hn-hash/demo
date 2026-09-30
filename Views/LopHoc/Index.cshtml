@@ -44,45 +44,70 @@
     </div>
     <div><button type="submit">Tìm kiếm</button></div>
 </form>
-<div class="table-wrap">
-    <table>
-        <thead><tr><th>Lớp học</th><th>Chương trình</th><th>Trình độ</th><th>Sĩ số tối đa</th><th>Hạn đăng ký</th><th>Trạng thái</th><th></th></tr></thead>
-        <tbody>
-        @foreach (var item in Model.LopHocs)
-        {
-            <tr>
-                <td>@item.TenLop</td><td>@item.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td>
-                <td>@item.TrinhDoDauVao</td><td>@item.SiSoToiDa</td><td>@item.HanDangKy.ToString("dd/MM/yyyy")</td>
-                <td><span class="badge">@item.TrangThai.ToDisplayName()</span>@(item.HanDangKy.Date < DateTime.Today ? " · Hết hạn" : " · Còn hạn")</td>
-                <td><a asp-action="Details" asp-route-id="@item.MaLop">Chi tiết</a></td>
-            </tr>
-        }
-        </tbody>
-    </table>
+<div id="course-results" aria-live="polite">
+    <partial name="_CourseResults" model="Model" />
 </div>
-@if (Model.LopHocs.Count == 0)
-{
-    <p class="muted">Không tìm thấy lớp phù hợp.</p>
+<div id="course-search-error" class="alert error" role="alert" hidden></div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const form = document.querySelector(".filters");
+            const results = document.getElementById("course-results");
+            const error = document.getElementById("course-search-error");
+            if (!(form instanceof HTMLFormElement) || !results || !error) return;
+
+            let debounceTimer;
+            let activeRequest;
+
+            const loadResults = async (url, updateHistory) => {
+                activeRequest?.abort();
+                activeRequest = new AbortController();
+                results.setAttribute("aria-busy", "true");
+                error.hidden = true;
+
+                try {
+                    const response = await fetch(url, {
+                        headers: { "X-Requested-With": "XMLHttpRequest" },
+                        signal: activeRequest.signal
+                    });
+                    if (!response.ok) throw new Error(`Tải danh sách lớp thất bại (HTTP ${response.status}).`);
+
+                    results.innerHTML = await response.text();
+                    if (updateHistory) window.history.pushState({}, "", url);
+                } catch (exception) {
+                    if (exception.name === "AbortError") return;
+                    error.textContent = exception instanceof Error ? exception.message : "Không thể tải danh sách lớp.";
+                    error.hidden = false;
+                } finally {
+                    results.removeAttribute("aria-busy");
+                }
+            };
+
+            const search = () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    const url = new URL(form.action, window.location.origin);
+                    url.search = new URLSearchParams(new FormData(form)).toString();
+                    loadResults(url, true);
+                }, 250);
+            };
+
+            form.addEventListener("submit", event => {
+                event.preventDefault();
+                search();
+            });
+            form.addEventListener("input", event => {
+                if (event.target instanceof HTMLInputElement) search();
+            });
+            form.addEventListener("change", search);
+            results.addEventListener("click", event => {
+                const link = event.target instanceof Element ? event.target.closest(".pagination a") : null;
+                if (!(link instanceof HTMLAnchorElement) || link.origin !== window.location.origin) return;
+                event.preventDefault();
+                loadResults(link.href, true);
+            });
+            window.addEventListener("popstate", () => loadResults(window.location.href, false));
+        })();
+    </script>
 }
-<div class="pagination">
-    @if (Model.TrangHienTai > 1)
-    {
-        <a class="button secondary" asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@(Model.TrangHienTai - 1)">Trang trước</a>
-    }
-    @foreach (var pageNumber in Model.SoTrang)
-    {
-        if (pageNumber == Model.TrangHienTai)
-        {
-            <strong>@pageNumber</strong>
-        }
-        else
-        {
-            <a asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@pageNumber">@pageNumber</a>
-        }
-    }
-    <span>Trang @Model.TrangHienTai / @Model.TongSoTrang</span>
-    @if (Model.TrangHienTai < Model.TongSoTrang)
-    {
-        <a class="button secondary" asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@(Model.TrangHienTai + 1)">Trang sau</a>
-    }
-</div>

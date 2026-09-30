@@ -1,0 +1,26 @@
+@model IReadOnlyList<ThongBao>
+@{
+    ViewData["Title"] = "Thông báo";
+}
+<h1>Thông báo hồ sơ</h1>
+@if (Model.Count == 0)
+{
+    <p class="muted">Bạn chưa có thông báo.</p>
+}
+else
+{
+    <div class="grid">
+        @foreach (var item in Model)
+        {
+            <section class="panel">
+                <h2>@item.TieuDe</h2>
+                <p>@item.NoiDung</p>
+                <p class="muted">@item.NgayTao.ToString("dd/MM/yyyy HH:mm") · @(item.NgayDoc.HasValue ? "Đã đọc" : "Chưa đọc")</p>
+                <form asp-action="MoHoSo" method="post">
+                    <input type="hidden" name="id" value="@item.MaThongBao" />
+                    <button type="submit">Xem hồ sơ</button>
+                </form>
+            </section>
+        }
+    </div>
+}

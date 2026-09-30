@@ -35,6 +35,11 @@ Các tài khoản bổ sung gồm `admin02`, `staff02` và học viên `student0
 - Kết quả xếp lớp: chỉ ghi nhận sau khi hoàn thành lịch kiểm tra; kiểm soát sĩ số bằng truy vấn LINQ.
 - Dashboard và một số thống kê nhóm theo chương trình, lớp, trạng thái và tháng.
 
+## Chức năng nâng cao đã bổ sung
+
+- **Tìm kiếm lớp học bằng AJAX:** danh sách được lọc và cập nhật không cần tải lại toàn bộ trang; hỗ trợ tìm kiếm, bộ lọc kết hợp và phân trang. URL được đồng bộ để có thể dùng nút Back/Forward của trình duyệt; nếu JavaScript không khả dụng, biểu mẫu vẫn tìm kiếm theo cách GET thông thường.
+- **Thông báo học viên lưu trong website:** thông báo được lưu trong cơ sở dữ liệu khi hồ sơ được xét duyệt, lịch kiểm tra được tạo/hoàn thành/hủy hoặc có kết quả xếp lớp. Học viên chỉ xem được thông báo của tài khoản mình, có thể đánh dấu đã đọc và mở hồ sơ liên quan.
+
 ## Migration
 
 Migration ban đầu và model snapshot được lưu trong thư mục `Migrations`. Để tạo migration khi thay đổi Entity:

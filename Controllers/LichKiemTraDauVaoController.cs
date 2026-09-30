@@ -7,7 +7,10 @@ using QuanLyKhoaHoc.ViewModels;
 
 namespace QuanLyKhoaHoc.Controllers;
 
-public class LichKiemTraDauVaoController(AppDbContext db, CurrentUser currentUser) : AppController(currentUser)
+public class LichKiemTraDauVaoController(
+    AppDbContext db,
+    CurrentUser currentUser,
+    ThongBaoService thongBaoService) : AppController(currentUser)
 {
     public async Task<IActionResult> Index()
     {
@@ -96,6 +99,10 @@ public class LichKiemTraDauVaoController(AppDbContext db, CurrentUser currentUse
             TrangThai = TrangThaiLich.DaLenLich
         });
         application.TrangThai = TrangThaiHoSo.ChoKiemTraDauVao;
+        await thongBaoService.TaoChoHocVienAsync(
+            application.MaHoSo,
+            "Lịch kiểm tra đầu vào đã được lập",
+            $"Lịch kiểm tra lớp {application.LopHoc?.TenLop} bắt đầu lúc {model.ThoiGianBatDau:dd/MM/yyyy HH:mm}.");
         await db.SaveChangesAsync();
         TempData["Success"] = "Đã lập lịch kiểm tra đầu vào.";
         return RedirectToAction(nameof(Index));
@@ -118,6 +125,10 @@ public class LichKiemTraDauVaoController(AppDbContext db, CurrentUser currentUse
         }
         schedule.TrangThai = TrangThaiLich.DaHoanThanh;
         schedule.HoSoDangKyHoc.TrangThai = TrangThaiHoSo.DaKiemTraDauVao;
+        await thongBaoService.TaoChoHocVienAsync(
+            schedule.MaHoSo,
+            "Đã hoàn thành kiểm tra đầu vào",
+            "Lịch kiểm tra đầu vào của bạn đã hoàn thành. Kết quả xếp lớp sẽ được cập nhật sau.");
         await db.SaveChangesAsync();
         TempData["Success"] = "Đã hoàn thành lịch kiểm tra. Có thể nhập kết quả xếp lớp.";
         return RedirectToAction(nameof(Index));
@@ -129,6 +140,7 @@ public class LichKiemTraDauVaoController(AppDbContext db, CurrentUser currentUse
         if (!RequireRole(nameof(VaiTro.Admin), nameof(VaiTro.NhanVienDaoTao)))
             return RedirectToAction("DangNhap", "TaiKhoan");
         var schedule = await db.LichKiemTraDauVaos.Include(x => x.HoSoDangKyHoc)
+            .ThenInclude(x => x!.LopHoc)
             .SingleOrDefaultAsync(x => x.MaLichKiemTraDauVao == id);
         if (schedule is null)
             return NotFound();
@@ -139,7 +151,13 @@ public class LichKiemTraDauVaoController(AppDbContext db, CurrentUser currentUse
         }
         schedule.TrangThai = TrangThaiLich.DaHuy;
         if (schedule.HoSoDangKyHoc?.TrangThai == TrangThaiHoSo.ChoKiemTraDauVao)
+        {
             schedule.HoSoDangKyHoc.TrangThai = TrangThaiHoSo.DuDieuKien;
+            await thongBaoService.TaoChoHocVienAsync(
+                schedule.MaHoSo,
+                "Lịch kiểm tra đã bị hủy",
+                $"Lịch kiểm tra lớp {schedule.HoSoDangKyHoc.LopHoc?.TenLop} đã bị hủy. Hồ sơ đã trở về trạng thái Đủ điều kiện.");
+        }
         await db.SaveChangesAsync();
         TempData["Success"] = "Đã hủy lịch kiểm tra.";
         return RedirectToAction(nameof(Index));

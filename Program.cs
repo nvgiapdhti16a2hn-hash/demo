@@ -17,6 +17,7 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddScoped<IPasswordHasher<TaiKhoan>, PasswordHasher<TaiKhoan>>();
 builder.Services.AddScoped<CurrentUser>();
+builder.Services.AddScoped<ThongBaoService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.");
 builder.Services.AddDbContext<AppDbContext>(options =>

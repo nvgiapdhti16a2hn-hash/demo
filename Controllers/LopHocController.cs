@@ -82,6 +82,8 @@ public class LopHocController(AppDbContext db, CurrentUser currentUser) : AppCon
             TrangHienTai = trang,
             TongSoTrang = pages
         };
+        if (string.Equals(Request.Headers.XRequestedWith, "XMLHttpRequest", StringComparison.Ordinal))
+            return PartialView("_CourseResults", model);
         return View(model);
     }
 

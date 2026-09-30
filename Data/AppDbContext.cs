@@ -12,6 +12,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<HoSoDangKyHoc> HoSoDangKyHocs => Set<HoSoDangKyHoc>();
     public DbSet<LichKiemTraDauVao> LichKiemTraDauVaos => Set<LichKiemTraDauVao>();
     public DbSet<KetQuaXepLop> KetQuaXepLops => Set<KetQuaXepLop>();
+    public DbSet<ThongBao> ThongBaos => Set<ThongBao>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,6 +23,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<HoSoDangKyHoc>().HasKey(x => x.MaHoSo);
         modelBuilder.Entity<LichKiemTraDauVao>().HasKey(x => x.MaLichKiemTraDauVao);
         modelBuilder.Entity<KetQuaXepLop>().HasKey(x => x.MaKetQuaXepLop);
+        modelBuilder.Entity<ThongBao>().HasKey(x => x.MaThongBao);
 
         modelBuilder.Entity<TaiKhoan>()
             .HasIndex(x => x.TenDangNhap)
@@ -35,6 +37,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<KetQuaXepLop>()
             .HasIndex(x => x.MaHoSo)
             .IsUnique();
+        modelBuilder.Entity<ThongBao>()
+            .HasIndex(x => new { x.MaTaiKhoan, x.NgayDoc, x.NgayTao });
         modelBuilder.Entity<LopHoc>()
             .Property(x => x.DiemDauVaoToiThieu)
             .HasPrecision(18, 2);
@@ -70,6 +74,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(x => x.HoSoDangKyHoc)
             .WithOne(x => x.KetQuaXepLop)
             .HasForeignKey<KetQuaXepLop>(x => x.MaHoSo)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<ThongBao>()
+            .HasOne(x => x.TaiKhoan)
+            .WithMany()
+            .HasForeignKey(x => x.MaTaiKhoan)
+            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<ThongBao>()
+            .HasOne(x => x.HoSoDangKyHoc)
+            .WithMany()
+            .HasForeignKey(x => x.MaHoSo)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

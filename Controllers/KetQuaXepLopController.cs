@@ -8,7 +8,10 @@ using QuanLyKhoaHoc.ViewModels;
 
 namespace QuanLyKhoaHoc.Controllers;
 
-public class KetQuaXepLopController(AppDbContext db, CurrentUser currentUser) : AppController(currentUser)
+public class KetQuaXepLopController(
+    AppDbContext db,
+    CurrentUser currentUser,
+    ThongBaoService thongBaoService) : AppController(currentUser)
 {
     [HttpGet]
     public async Task<IActionResult> CapNhat(int id)
@@ -76,6 +79,12 @@ public class KetQuaXepLopController(AppDbContext db, CurrentUser currentUser) : 
         application.TrangThai = model.DuocXepLop
             ? TrangThaiHoSo.DuocXepLop
             : TrangThaiHoSo.ChuaDuocXepLop;
+        await thongBaoService.TaoChoHocVienAsync(
+            application.MaHoSo,
+            "Đã có kết quả xếp lớp",
+            model.DuocXepLop
+                ? $"Bạn đã được xếp vào lớp {application.LopHoc?.TenLop}."
+                : $"Bạn chưa được xếp vào lớp {application.LopHoc?.TenLop}. Vui lòng xem nhận xét kết quả.");
         await db.SaveChangesAsync();
         await transaction.CommitAsync();
         TempData["Success"] = "Đã cập nhật kết quả xếp lớp.";
