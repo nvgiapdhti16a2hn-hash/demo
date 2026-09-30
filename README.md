@@ -42,7 +42,3 @@ dotnet tool install --global dotnet-ef --version 10.*
 dotnet ef migrations add TenMigrationMoi
 dotnet ef database update
 ```
-
-## Thông tin sinh viên
-
-Các file thuộc Module 3 đang ghi nhãn `Sinh viên 3 (bổ sung họ tên)` và `SV3 (bổ sung mã sinh viên)`. Thay hai phần này bằng họ tên và mã sinh viên thật trước khi nộp; không cần chỉnh các file do thành viên khác phụ trách.
