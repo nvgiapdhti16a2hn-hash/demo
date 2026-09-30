@@ -1,0 +1,15 @@
+@* Họ và tên: Sinh viên 3 (bổ sung họ tên) | Mã sinh viên: SV3 (bổ sung mã sinh viên) | Tạo tài khoản học viên *@
+@model RegisterStudentViewModel
+@{
+    ViewData["Title"] = "Tạo tài khoản học viên";
+}
+<h1>Tạo tài khoản học viên</h1>
+<form asp-action="DangKy" method="post" class="form">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="TenDangNhap">Tên đăng nhập</label><input asp-for="TenDangNhap" autocomplete="username" /><span asp-validation-for="TenDangNhap"></span></div>
+    <div class="field"><label asp-for="MatKhau">Mật khẩu (ít nhất 8 ký tự)</label><input asp-for="MatKhau" autocomplete="new-password" /><span asp-validation-for="MatKhau"></span></div>
+    <div class="field"><label asp-for="HoTen">Họ và tên</label><input asp-for="HoTen" /><span asp-validation-for="HoTen"></span></div>
+    <div class="field"><label asp-for="Email"></label><input asp-for="Email" /><span asp-validation-for="Email"></span></div>
+    <div class="field"><label asp-for="SoDienThoai">Số điện thoại</label><input asp-for="SoDienThoai" /><span asp-validation-for="SoDienThoai"></span></div>
+    <button type="submit">Tạo tài khoản</button>
+</form>

@@ -1,0 +1,24 @@
+@model XetDuyetViewModel
+@{
+    ViewData["Title"] = "Xét duyệt hồ sơ";
+    var application = (HoSoDangKyHoc)ViewBag.Application;
+}
+<h1>Xét duyệt hồ sơ #@Model.MaHoSo</h1>
+<section class="panel">
+    <dl class="detail-list">
+        <dt>Học viên</dt><dd>@application.HocVien?.HoTen</dd>
+        <dt>Email / điện thoại</dt><dd>@application.HocVien?.Email / @application.HocVien?.SoDienThoai</dd>
+        <dt>Trình độ</dt><dd>@application.HocVien?.TrinhDoHienTai</dd>
+        <dt>Lớp</dt><dd>@application.LopHoc?.TenLop</dd>
+        <dt>Trình độ yêu cầu</dt><dd>@application.LopHoc?.TrinhDoDauVao</dd>
+        <dt>Lý do</dt><dd>@application.LyDoDangKy</dd>
+    </dl>
+    <p class="muted">Nhân viên đào tạo quyết định đủ điều kiện dựa trên hồ sơ và yêu cầu lớp; hệ thống không tự kết luận thay.</p>
+</section>
+<form asp-action="XetDuyet" method="post" class="form">
+    <input asp-for="MaHoSo" type="hidden" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="DuDieuKien">Kết quả</label><select asp-for="DuDieuKien"><option value="true">Đủ điều kiện</option><option value="false">Không đủ điều kiện</option></select></div>
+    <div class="field"><label asp-for="NhanXet">Nhận xét xét duyệt</label><textarea asp-for="NhanXet"></textarea><span asp-validation-for="NhanXet"></span></div>
+    <button type="submit">Lưu xét duyệt</button>
+</form>

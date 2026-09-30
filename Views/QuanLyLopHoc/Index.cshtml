@@ -1,0 +1,17 @@
+@model IEnumerable<LopHoc>
+@{
+    ViewData["Title"] = "Quản lý lớp học";
+}
+<h1>Quản lý lớp học</h1>
+<div class="actions"><a class="button" asp-action="Create">Thêm lớp học</a></div>
+<div class="table-wrap"><table>
+    <thead><tr><th>Tên lớp</th><th>Chương trình</th><th>Nhận hồ sơ đến</th><th>Sĩ số</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr><td>@item.TenLop</td><td>@item.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td><td>@item.HanDangKy.ToString("dd/MM/yyyy")</td><td>@item.SiSoToiDa</td><td>@item.TrangThai.ToDisplayName()</td>
+            <td><a asp-action="Details" asp-route-id="@item.MaLop">Chi tiết</a> · <a asp-action="Edit" asp-route-id="@item.MaLop">Sửa</a>
+                <form asp-action="Delete" asp-route-id="@item.MaLop" method="post" class="inline"><button type="submit" class="danger">Xóa</button></form>
+            </td>
+        </tr>
+    }</tbody>
+</table></div>

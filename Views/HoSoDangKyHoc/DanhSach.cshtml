@@ -1,0 +1,13 @@
+@model IEnumerable<HoSoDangKyHoc>
+@{
+    ViewData["Title"] = "Tiếp nhận hồ sơ";
+}
+<h1>Hồ sơ toàn hệ thống</h1>
+<div class="actions"><a class="button" asp-controller="TiepNhanHoSo" asp-action="Index">Mở xử lý và xét duyệt</a></div>
+<div class="table-wrap"><table>
+    <thead><tr><th>Mã</th><th>Học viên</th><th>Lớp</th><th>Chương trình</th><th>Ngày nộp</th><th>Trạng thái</th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr><td>@item.MaHoSo</td><td>@item.HocVien?.HoTen</td><td>@item.LopHoc?.TenLop</td><td>@item.LopHoc?.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td><td>@item.NgayNop.ToString("dd/MM/yyyy HH:mm")</td><td>@item.TrangThai.ToDisplayName()</td></tr>
+    }</tbody>
+</table></div>

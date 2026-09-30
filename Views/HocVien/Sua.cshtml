@@ -1,0 +1,20 @@
+@* Họ và tên: Sinh viên 3 (bổ sung họ tên) | Mã sinh viên: SV3 (bổ sung mã sinh viên) | Hồ sơ cá nhân học viên *@
+@model HocVienProfileViewModel
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+}
+<h1>Hồ sơ cá nhân</h1>
+<form asp-action="Sua" method="post" class="form">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="HoTen">Họ và tên</label><input asp-for="HoTen" /><span asp-validation-for="HoTen"></span></div>
+    <div class="field"><label asp-for="NgaySinh">Ngày sinh</label><input asp-for="NgaySinh" type="date" /></div>
+    <div class="field"><label asp-for="GioiTinh">Giới tính</label><select asp-for="GioiTinh"><option value="">-- Chọn --</option><option>Nam</option><option>Nữ</option><option>Khác</option></select></div>
+    <div class="field"><label asp-for="SoDienThoai">Số điện thoại</label><input asp-for="SoDienThoai" /><span asp-validation-for="SoDienThoai"></span></div>
+    <div class="field"><label asp-for="Email"></label><input asp-for="Email" /><span asp-validation-for="Email"></span></div>
+    <div class="field"><label asp-for="DiaChi">Địa chỉ</label><input asp-for="DiaChi" /></div>
+    <div class="field"><label asp-for="TrinhDoHienTai">Trình độ hiện tại</label><input asp-for="TrinhDoHienTai" /></div>
+    <div class="field"><label asp-for="NgheNghiep">Nghề nghiệp</label><input asp-for="NgheNghiep" /></div>
+    <div class="field"><label asp-for="SoThangDaHoc">Số tháng đã học</label><input asp-for="SoThangDaHoc" /><span asp-validation-for="SoThangDaHoc"></span></div>
+    <div class="field"><label asp-for="MucTieuHoc">Mục tiêu học</label><textarea asp-for="MucTieuHoc"></textarea></div>
+    <button type="submit">Lưu hồ sơ</button>
+</form>

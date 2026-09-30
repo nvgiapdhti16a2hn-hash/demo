@@ -1,0 +1,30 @@
+@* Họ và tên: Sinh viên 3 (bổ sung họ tên) | Mã sinh viên: SV3 (bổ sung mã sinh viên) | Theo dõi hồ sơ của học viên *@
+@model IEnumerable<HoSoDangKyHoc>
+@{
+    ViewData["Title"] = "Hồ sơ đăng ký của tôi";
+}
+<h1>Hồ sơ đăng ký của tôi</h1>
+<div class="actions"><a class="button" asp-controller="LopHoc" asp-action="Index">Tìm lớp học</a></div>
+<div class="table-wrap"><table>
+    <thead><tr><th>Mã hồ sơ</th><th>Lớp học</th><th>Chương trình</th><th>Ngày nộp</th><th>Trạng thái</th><th>Lịch kiểm tra</th><th>Kết quả</th><th></th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.MaHoSo</td><td>@item.LopHoc?.TenLop</td><td>@item.LopHoc?.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td>
+            <td>@item.NgayNop.ToString("dd/MM/yyyy HH:mm")</td><td><span class="badge">@item.TrangThai.ToDisplayName()</span></td>
+            <td>@foreach (var exam in item.LichKiemTras.OrderBy(x => x.ThoiGianBatDau))
+                { <div>@exam.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm") · @exam.TrangThai.ToDisplayName()</div> }</td>
+            <td>@(item.KetQuaXepLop is null ? "Chưa có" : item.KetQuaXepLop.DuocXepLop ? "Được xếp lớp" : "Chưa được xếp lớp")</td>
+            <td><a asp-action="ChiTiet" asp-route-id="@item.MaHoSo">Chi tiết</a>
+                @if (item.TrangThai is (TrangThaiHoSo.ChoDuyet or TrangThaiHoSo.DuDieuKien) && !item.LichKiemTras.Any(x => x.TrangThai == TrangThaiLich.DaLenLich))
+                {
+                    <form asp-action="Huy" asp-route-id="@item.MaHoSo" method="post" class="inline"><button type="submit" class="danger">Hủy</button></form>
+                }
+            </td>
+        </tr>
+    }</tbody>
+</table></div>
+@if (!Model.Any())
+{
+    <p class="muted">Bạn chưa nộp hồ sơ đăng ký nào.</p>
+}

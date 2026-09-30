@@ -1,0 +1,15 @@
+@* Họ và tên: Sinh viên 3 (bổ sung họ tên) | Mã sinh viên: SV3 (bổ sung mã sinh viên) | Danh sách học viên *@
+@model IEnumerable<HocVien>
+@{
+    ViewData["Title"] = "Danh sách học viên";
+}
+<h1>Danh sách học viên</h1>
+<div class="table-wrap"><table>
+    <thead><tr><th>Họ tên</th><th>Tài khoản</th><th>Email</th><th>Số điện thoại</th><th>Trình độ</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr><td>@item.HoTen</td><td>@item.TaiKhoan?.TenDangNhap</td><td>@item.Email</td><td>@item.SoDienThoai</td><td>@item.TrinhDoHienTai</td><td>@(item.TrangThai ? "Hoạt động" : "Ngừng")</td>
+            <td><form asp-action="DoiTrangThai" asp-route-id="@item.MaHocVien" method="post"><button type="submit" class="@(item.TrangThai ? "danger" : "")">@(item.TrangThai ? "Ngừng hoạt động" : "Kích hoạt")</button></form></td>
+        </tr>
+    }</tbody>
+</table></div>

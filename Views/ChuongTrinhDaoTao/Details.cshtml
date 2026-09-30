@@ -1,0 +1,16 @@
+@model ChuongTrinhDaoTao
+@{
+    ViewData["Title"] = "Chi tiết chương trình";
+}
+<section class="panel">
+    <h1>@Model.TenChuongTrinhDaoTao</h1>
+    <p>@Model.MoTa</p>
+    <p>Email liên hệ: @Model.EmailLienHe</p>
+    <p>Trạng thái: @Model.TrangThai.ToDisplayName()</p>
+    <h2>Lớp học thuộc chương trình</h2>
+    <ul>@foreach (var item in Model.LopHocs)
+    {
+        <li><a asp-controller="QuanLyLopHoc" asp-action="Details" asp-route-id="@item.MaLop">@item.TenLop</a></li>
+    }</ul>
+    <a class="button secondary" asp-action="Index">Quay lại</a>
+</section>

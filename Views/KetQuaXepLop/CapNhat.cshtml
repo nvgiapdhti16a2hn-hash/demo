@@ -1,0 +1,15 @@
+@model KetQuaViewModel
+@{
+    ViewData["Title"] = "Kết quả xếp lớp";
+    var application = (HoSoDangKyHoc)ViewBag.Application;
+}
+<h1>Kết quả xếp lớp</h1>
+<section class="panel"><p>Hồ sơ #@Model.MaHoSo · @application.HocVien?.HoTen · @application.LopHoc?.TenLop</p></section>
+<form asp-action="CapNhat" method="post" class="form">
+    <input asp-for="MaHoSo" type="hidden" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="DiemDanhGia">Điểm đánh giá (0-100)</label><input asp-for="DiemDanhGia" /><span asp-validation-for="DiemDanhGia"></span></div>
+    <div class="field"><label asp-for="NhanXet">Nhận xét</label><textarea asp-for="NhanXet"></textarea><span asp-validation-for="NhanXet"></span></div>
+    <div class="field"><label asp-for="DuocXepLop">Kết quả cuối cùng</label><select asp-for="DuocXepLop"><option value="true">Được xếp lớp</option><option value="false">Chưa được xếp lớp</option></select></div>
+    <button type="submit">Xác nhận kết quả</button>
+</form>

@@ -1,0 +1,12 @@
+@model IReadOnlyList<ThongKeDong>
+<div class="table-wrap"><table>
+    <thead><tr><th>Nhóm</th><th>Số lượng</th></tr></thead>
+    <tbody>@foreach (var row in Model)
+    {
+        <tr><td>@row.Ten</td><td>@row.SoLuong</td></tr>
+    }</tbody>
+</table></div>
+@if (Model.Count == 0)
+{
+    <p class="muted">Chưa có dữ liệu.</p>
+}

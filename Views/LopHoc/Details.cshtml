@@ -1,0 +1,24 @@
+@model LopHoc
+@{
+    ViewData["Title"] = "Chi tiết lớp học";
+    var accepting = Model.TrangThai == TrangThaiLop.DangMoDangKy &&
+        Model.NgayBatDauDangKy.Date <= DateTime.Today && Model.HanDangKy.Date >= DateTime.Today;
+}
+<section class="panel">
+    <h1>@Model.TenLop</h1>
+    <dl class="detail-list">
+        <dt>Chương trình</dt><dd>@Model.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</dd>
+        <dt>Trình độ đầu vào</dt><dd>@Model.TrinhDoDauVao</dd>
+        <dt>Điểm đầu vào tối thiểu</dt><dd>@Model.DiemDauVaoToiThieu</dd>
+        <dt>Sĩ số</dt><dd>@ViewBag.SoLuongDaXepLop / @Model.SiSoToiDa học viên đã được xếp lớp</dd>
+        <dt>Nhận hồ sơ từ</dt><dd>@Model.NgayBatDauDangKy.ToString("dd/MM/yyyy") đến @Model.HanDangKy.ToString("dd/MM/yyyy")</dd>
+        <dt>Trạng thái</dt><dd>@Model.TrangThai.ToDisplayName() @(accepting ? "(đang nhận hồ sơ)" : "(hiện không nhận hồ sơ)")</dd>
+        <dt>Mô tả</dt><dd>@Model.MoTaLopHoc</dd>
+        <dt>Yêu cầu học viên</dt><dd>@Model.YeuCauHocVien</dd>
+    </dl>
+    @if (Context.Session.GetString("AccountRole") == nameof(VaiTro.HocVien) && accepting)
+    {
+        <a class="button" asp-action="DangKy" asp-route-id="@Model.MaLop">Nộp hồ sơ đăng ký</a>
+    }
+    <a class="button secondary" asp-action="Index">Quay lại danh sách</a>
+</section>

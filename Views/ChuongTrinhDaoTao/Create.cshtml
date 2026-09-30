@@ -1,0 +1,13 @@
+@model ChuongTrinhDaoTao
+@{
+    ViewData["Title"] = "Tạo chương trình";
+}
+<h1>Tạo chương trình đào tạo</h1>
+<form asp-action="Create" method="post" class="form">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="TenChuongTrinhDaoTao">Tên chương trình</label><input asp-for="TenChuongTrinhDaoTao" /><span asp-validation-for="TenChuongTrinhDaoTao"></span></div>
+    <div class="field"><label asp-for="MoTa">Mô tả</label><textarea asp-for="MoTa"></textarea></div>
+    <div class="field"><label asp-for="EmailLienHe">Email liên hệ</label><input asp-for="EmailLienHe" /><span asp-validation-for="EmailLienHe"></span></div>
+    <div class="field"><label asp-for="TrangThai">Trạng thái</label><select asp-for="TrangThai" asp-items="Html.GetEnumSelectList<TrangThaiChuongTrinh>()"></select></div>
+    <button type="submit">Lưu chương trình</button>
+</form>

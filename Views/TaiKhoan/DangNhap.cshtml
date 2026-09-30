@@ -1,0 +1,13 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+<h1>Đăng nhập</h1>
+<form asp-action="DangNhap" method="post" class="form">
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="TenDangNhap"></label><input asp-for="TenDangNhap" autocomplete="username" /><span asp-validation-for="TenDangNhap"></span></div>
+    <div class="field"><label asp-for="MatKhau">Mật khẩu</label><input asp-for="MatKhau" autocomplete="current-password" /><span asp-validation-for="MatKhau"></span></div>
+    <button type="submit">Đăng nhập</button>
+    <a asp-action="DangKy" class="button secondary">Tạo tài khoản học viên</a>
+</form>

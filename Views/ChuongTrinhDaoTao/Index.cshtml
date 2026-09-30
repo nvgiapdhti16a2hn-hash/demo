@@ -1,0 +1,17 @@
+@model IEnumerable<ChuongTrinhDaoTao>
+@{
+    ViewData["Title"] = "Chương trình đào tạo";
+}
+<h1>Chương trình đào tạo</h1>
+<div class="actions"><a class="button" asp-action="Create">Thêm chương trình</a></div>
+<div class="table-wrap"><table>
+    <thead><tr><th>Tên chương trình</th><th>Email liên hệ</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr><td>@item.TenChuongTrinhDaoTao</td><td>@item.EmailLienHe</td><td>@item.TrangThai.ToDisplayName()</td>
+            <td><a asp-action="Details" asp-route-id="@item.MaChuongTrinhDaoTao">Chi tiết</a> · <a asp-action="Edit" asp-route-id="@item.MaChuongTrinhDaoTao">Sửa</a>
+                <form asp-action="Delete" asp-route-id="@item.MaChuongTrinhDaoTao" method="post" class="inline"><button class="danger" type="submit">Xóa</button></form>
+            </td>
+        </tr>
+    }</tbody>
+</table></div>

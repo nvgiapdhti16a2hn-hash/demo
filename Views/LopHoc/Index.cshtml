@@ -1,0 +1,88 @@
+@model CourseListViewModel
+@{
+    ViewData["Title"] = "Danh sách lớp học";
+}
+<h1>Danh sách lớp học</h1>
+<form method="get" class="filters">
+    <div><label for="tuKhoa">Tìm lớp / chương trình</label><input id="tuKhoa" name="tuKhoa" value="@Model.TuKhoa" /></div>
+    <div><label for="maChuongTrinh">Chương trình</label>
+        <select id="maChuongTrinh" name="maChuongTrinh">
+            <option value="">Tất cả</option>
+            @foreach (var program in Model.ChuongTrinhs)
+            {
+                <option value="@program.MaChuongTrinhDaoTao" selected="@(Model.MaChuongTrinh == program.MaChuongTrinhDaoTao)">@program.TenChuongTrinhDaoTao</option>
+            }
+        </select>
+    </div>
+    <div><label for="trinhDo">Trình độ đầu vào</label><input id="trinhDo" name="trinhDo" value="@Model.TrinhDo" /></div>
+    <div><label for="diemToiDa">Điểm đầu vào tối đa</label><input id="diemToiDa" name="diemToiDa" type="number" min="0" max="100" step="0.01" value="@Model.DiemToiDa" /></div>
+    <div><label for="trangThai">Trạng thái</label>
+        <select id="trangThai" name="trangThai">
+            <option value="">Tất cả</option>
+            @foreach (var state in Enum.GetValues<TrangThaiLop>())
+            {
+                <option value="@state" selected="@(Model.TrangThai == state)">@state.ToDisplayName()</option>
+            }
+        </select>
+    </div>
+    <div><label for="conHan">Thời hạn nhận hồ sơ</label>
+        <select id="conHan" name="conHan">
+            <option value="">Tất cả</option>
+            <option value="true" selected="@(Model.ConHan == true)">Còn hạn</option>
+            <option value="false" selected="@(Model.ConHan == false)">Hết hạn</option>
+        </select>
+    </div>
+    <div><label for="sapXep">Sắp xếp</label>
+        <select id="sapXep" name="sapXep">
+            <option value="ten_az" selected="@(Model.SapXep == "ten_az")">Tên A-Z</option>
+            <option value="ten_za" selected="@(Model.SapXep == "ten_za")">Tên Z-A</option>
+            <option value="han_tang" selected="@(Model.SapXep == "han_tang")">Hạn đăng ký tăng</option>
+            <option value="han_giam" selected="@(Model.SapXep == "han_giam")">Hạn đăng ký giảm</option>
+            <option value="siso_tang" selected="@(Model.SapXep == "siso_tang")">Sĩ số tăng</option>
+            <option value="siso_giam" selected="@(Model.SapXep == "siso_giam")">Sĩ số giảm</option>
+        </select>
+    </div>
+    <div><button type="submit">Tìm kiếm</button></div>
+</form>
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Lớp học</th><th>Chương trình</th><th>Trình độ</th><th>Sĩ số tối đa</th><th>Hạn đăng ký</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var item in Model.LopHocs)
+        {
+            <tr>
+                <td>@item.TenLop</td><td>@item.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td>
+                <td>@item.TrinhDoDauVao</td><td>@item.SiSoToiDa</td><td>@item.HanDangKy.ToString("dd/MM/yyyy")</td>
+                <td><span class="badge">@item.TrangThai.ToDisplayName()</span>@(item.HanDangKy.Date < DateTime.Today ? " · Hết hạn" : " · Còn hạn")</td>
+                <td><a asp-action="Details" asp-route-id="@item.MaLop">Chi tiết</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+@if (Model.LopHocs.Count == 0)
+{
+    <p class="muted">Không tìm thấy lớp phù hợp.</p>
+}
+<div class="pagination">
+    @if (Model.TrangHienTai > 1)
+    {
+        <a class="button secondary" asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@(Model.TrangHienTai - 1)">Trang trước</a>
+    }
+    @foreach (var pageNumber in Model.SoTrang)
+    {
+        if (pageNumber == Model.TrangHienTai)
+        {
+            <strong>@pageNumber</strong>
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@pageNumber">@pageNumber</a>
+        }
+    }
+    <span>Trang @Model.TrangHienTai / @Model.TongSoTrang</span>
+    @if (Model.TrangHienTai < Model.TongSoTrang)
+    {
+        <a class="button secondary" asp-action="Index" asp-route-tuKhoa="@Model.TuKhoa" asp-route-maChuongTrinh="@Model.MaChuongTrinh" asp-route-trinhDo="@Model.TrinhDo" asp-route-diemToiDa="@Model.DiemToiDa" asp-route-trangThai="@Model.TrangThai" asp-route-conHan="@Model.ConHan" asp-route-sapXep="@Model.SapXep" asp-route-trang="@(Model.TrangHienTai + 1)">Trang sau</a>
+    }
+</div>

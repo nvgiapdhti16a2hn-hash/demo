@@ -1,0 +1,23 @@
+@model IEnumerable<LichKiemTraDauVao>
+@{
+    ViewData["Title"] = "Lịch kiểm tra đầu vào";
+}
+<h1>Lịch kiểm tra đầu vào</h1>
+<div class="table-wrap"><table>
+    <thead><tr><th>Học viên</th><th>Lớp</th><th>Thời gian</th><th>Hình thức / địa điểm</th><th>Giáo viên</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.HoSoDangKyHoc?.HocVien?.HoTen</td><td>@item.HoSoDangKyHoc?.LopHoc?.TenLop</td>
+            <td>@item.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm") - @item.ThoiGianKetThuc.ToString("HH:mm")</td>
+            <td>@item.HinhThucKiemTra / @item.DiaDiemHoacLienKet</td><td>@item.GiaoVienKiemTra</td><td>@item.TrangThai.ToDisplayName()</td>
+            <td>
+                @if (item.TrangThai == TrangThaiLich.DaLenLich)
+                {
+                    <form asp-action="HoanThanh" asp-route-id="@item.MaLichKiemTraDauVao" method="post" class="inline"><button type="submit">Hoàn thành</button></form>
+                    <form asp-action="Huy" asp-route-id="@item.MaLichKiemTraDauVao" method="post" class="inline"><button type="submit" class="danger">Hủy lịch</button></form>
+                }
+            </td>
+        </tr>
+    }</tbody>
+</table></div>

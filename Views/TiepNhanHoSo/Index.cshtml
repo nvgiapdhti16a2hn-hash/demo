@@ -1,0 +1,57 @@
+@model IEnumerable<HoSoDangKyHoc>
+@{
+    ViewData["Title"] = "Xét duyệt hồ sơ";
+}
+<h1>Tiếp nhận và xét duyệt hồ sơ</h1>
+<form method="get" class="filters">
+    <div><label>Tên học viên / lớp</label><input name="tuKhoa" value="@ViewBag.TuKhoa" /></div>
+    <div><label>Chương trình</label><select name="maChuongTrinh"><option value="">Tất cả</option>
+        @foreach (var program in (IEnumerable<ChuongTrinhDaoTao>)ViewBag.ChuongTrinhs)
+        {
+            <option value="@program.MaChuongTrinhDaoTao" selected="@(ViewBag.MaChuongTrinh == program.MaChuongTrinhDaoTao)">@program.TenChuongTrinhDaoTao</option>
+        }
+    </select></div>
+    <div><label>Trạng thái</label>
+        <select name="trangThai"><option value="">Tất cả</option>
+            @foreach (var state in Enum.GetValues<TrangThaiHoSo>())
+            {
+                <option value="@state" selected="@(ViewBag.TrangThai?.ToString() == state.ToString())">@state.ToDisplayName()</option>
+            }
+        </select>
+    </div>
+    <div><label>Ngày nộp</label><input type="date" name="ngayNop" value="@ViewBag.NgayNop" /></div>
+    <div><label>Sắp xếp</label><select name="sapXep">
+        <option value="ngay_giam" selected="@(ViewBag.SapXep == "ngay_giam")">Ngày nộp mới nhất</option>
+        <option value="ngay_tang" selected="@(ViewBag.SapXep == "ngay_tang")">Ngày nộp cũ nhất</option>
+        <option value="ten_tang" selected="@(ViewBag.SapXep == "ten_tang")">Tên học viên A-Z</option>
+    </select></div>
+    <div><button type="submit">Lọc hồ sơ</button></div>
+</form>
+<div class="table-wrap"><table>
+    <thead><tr><th>Học viên</th><th>Lớp</th><th>Chương trình</th><th>Ngày nộp</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.HocVien?.HoTen</td><td>@item.LopHoc?.TenLop</td><td>@item.LopHoc?.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</td>
+            <td>@item.NgayNop.ToString("dd/MM/yyyy HH:mm")</td><td>@item.TrangThai.ToDisplayName()</td>
+            <td>
+                @if (item.TrangThai == TrangThaiHoSo.ChoDuyet)
+                {
+                    <a class="button" asp-action="XetDuyet" asp-route-id="@item.MaHoSo">Xét duyệt</a>
+                }
+                @if (item.TrangThai == TrangThaiHoSo.DuDieuKien)
+                {
+                    <a class="button" asp-controller="LichKiemTraDauVao" asp-action="LapLich" asp-route-id="@item.MaHoSo">Lập lịch</a>
+                }
+                @if (item.TrangThai == TrangThaiHoSo.DaKiemTraDauVao)
+                {
+                    <a class="button" asp-controller="KetQuaXepLop" asp-action="CapNhat" asp-route-id="@item.MaHoSo">Nhập kết quả</a>
+                }
+            </td>
+        </tr>
+    }</tbody>
+</table></div>
+@if (!Model.Any())
+{
+    <p class="muted">Không có hồ sơ phù hợp.</p>
+}

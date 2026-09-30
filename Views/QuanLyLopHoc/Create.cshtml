@@ -1,0 +1,19 @@
+@model LopHoc
+@{
+    ViewData["Title"] = "Tạo lớp học";
+}
+<h1>Tạo lớp học</h1>
+<form asp-action="Create" method="post" class="form">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="TenLop">Tên lớp</label><input asp-for="TenLop" /><span asp-validation-for="TenLop"></span></div>
+    <div class="field"><label asp-for="MaChuongTrinhDaoTao">Chương trình đào tạo</label><select asp-for="MaChuongTrinhDaoTao" asp-items="ViewBag.Programs"><option value="">-- Chọn chương trình --</option></select><span asp-validation-for="MaChuongTrinhDaoTao"></span></div>
+    <div class="field"><label asp-for="SiSoToiDa">Sĩ số tối đa</label><input asp-for="SiSoToiDa" /><span asp-validation-for="SiSoToiDa"></span></div>
+    <div class="field"><label asp-for="TrinhDoDauVao">Trình độ đầu vào</label><input asp-for="TrinhDoDauVao" /><span asp-validation-for="TrinhDoDauVao"></span></div>
+    <div class="field"><label asp-for="DiemDauVaoToiThieu">Điểm tối thiểu (0-100)</label><input asp-for="DiemDauVaoToiThieu" /><span asp-validation-for="DiemDauVaoToiThieu"></span></div>
+    <div class="field"><label asp-for="NgayBatDauDangKy">Bắt đầu nhận hồ sơ</label><input asp-for="NgayBatDauDangKy" type="date" /><span asp-validation-for="NgayBatDauDangKy"></span></div>
+    <div class="field"><label asp-for="HanDangKy">Hạn đăng ký</label><input asp-for="HanDangKy" type="date" /><span asp-validation-for="HanDangKy"></span></div>
+    <div class="field"><label asp-for="MoTaLopHoc">Mô tả</label><textarea asp-for="MoTaLopHoc"></textarea></div>
+    <div class="field"><label asp-for="YeuCauHocVien">Yêu cầu học viên</label><textarea asp-for="YeuCauHocVien"></textarea></div>
+    <div class="field"><label asp-for="TrangThai">Trạng thái</label><select asp-for="TrangThai" asp-items="Html.GetEnumSelectList<TrangThaiLop>()"></select></div>
+    <button type="submit">Lưu lớp học</button>
+</form>

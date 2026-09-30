@@ -1,0 +1,18 @@
+@model IEnumerable<TaiKhoan>
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+<h1>Quản lý tài khoản</h1>
+<div class="actions"><a class="button" asp-action="Create">Tạo tài khoản nhân viên/Admin</a></div>
+<div class="table-wrap"><table>
+    <thead><tr><th>Tên đăng nhập</th><th>Họ tên</th><th>Email</th><th>Vai trò</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>@foreach (var item in Model)
+    {
+        <tr><td>@item.TenDangNhap</td><td>@item.HoTen</td><td>@item.Email</td><td>@item.VaiTro.ToDisplayName()</td><td>@item.TrangThai.ToDisplayName()</td>
+            <td>@if (Context.Session.GetInt32("AccountId") != item.MaTaiKhoan)
+                {
+                    <form asp-action="DoiTrangThai" asp-route-id="@item.MaTaiKhoan" method="post"><button type="submit" class="@(item.TrangThai == TrangThaiTaiKhoan.HoatDong ? "danger" : "")">@(item.TrangThai == TrangThaiTaiKhoan.HoatDong ? "Khóa" : "Mở khóa")</button></form>
+                }</td>
+        </tr>
+    }</tbody>
+</table></div>

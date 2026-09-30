@@ -1,0 +1,18 @@
+@model LichKiemTraViewModel
+@{
+    ViewData["Title"] = "Lập lịch kiểm tra";
+    var application = (HoSoDangKyHoc)ViewBag.Application;
+}
+<h1>Lập lịch kiểm tra đầu vào</h1>
+<section class="panel"><p>Hồ sơ #@Model.MaHoSo · @application.HocVien?.HoTen · @application.LopHoc?.TenLop</p></section>
+<form asp-action="LapLich" method="post" class="form">
+    <input asp-for="MaHoSo" type="hidden" />
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="ThoiGianBatDau">Thời gian bắt đầu</label><input asp-for="ThoiGianBatDau" type="datetime-local" /><span asp-validation-for="ThoiGianBatDau"></span></div>
+    <div class="field"><label asp-for="ThoiGianKetThuc">Thời gian kết thúc</label><input asp-for="ThoiGianKetThuc" type="datetime-local" /><span asp-validation-for="ThoiGianKetThuc"></span></div>
+    <div class="field"><label asp-for="HinhThucKiemTra">Hình thức</label><input asp-for="HinhThucKiemTra" /><span asp-validation-for="HinhThucKiemTra"></span></div>
+    <div class="field"><label asp-for="DiaDiemHoacLienKet">Địa điểm hoặc liên kết</label><input asp-for="DiaDiemHoacLienKet" /></div>
+    <div class="field"><label asp-for="GiaoVienKiemTra">Giáo viên kiểm tra</label><input asp-for="GiaoVienKiemTra" /><span asp-validation-for="GiaoVienKiemTra"></span></div>
+    <div class="field"><label asp-for="GhiChu">Ghi chú</label><textarea asp-for="GhiChu"></textarea></div>
+    <button type="submit">Lưu lịch kiểm tra</button>
+</form>

@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+<section class="hero">
+    <h1>Hệ thống quản lý khóa học và đăng ký học viên</h1>
+    <p>Quản lý chương trình đào tạo, lớp học, hồ sơ đăng ký và kiểm tra đầu vào trên cùng một hệ thống.</p>
+    <div class="actions">
+        <a class="button" asp-controller="LopHoc" asp-action="Index">Xem lớp học đang tuyển</a>
+        @if (Context.Session.GetString("AccountRole") is nameof(VaiTro.Admin) or nameof(VaiTro.NhanVienDaoTao))
+        {
+            <a class="button secondary" asp-controller="ThongKe" asp-action="Index">Mở dashboard thống kê</a>
+        }
+    </div>
+</section>
+<div class="grid">
+    <div class="stat"><strong>@ViewBag.ProgramCount</strong><span>Chương trình đào tạo</span></div>
+    <div class="stat"><strong>@ViewBag.ClassCount</strong><span>Lớp học</span></div>
+    <div class="stat"><strong>@ViewBag.OpenClassCount</strong><span>Lớp đang mở đăng ký</span></div>
+    <div class="stat"><strong>@ViewBag.ApplicationCount</strong><span>Hồ sơ đăng ký</span></div>
+    <div class="stat"><strong>@ViewBag.PendingCount</strong><span>Hồ sơ chờ duyệt</span></div>
+    <div class="stat"><strong>@ViewBag.UpcomingExams</strong><span>Lịch kiểm tra sắp tới</span></div>
+    <div class="stat"><strong>@ViewBag.PlacedCount</strong><span>Học viên được xếp lớp</span></div>
+</div>
+<section class="panel" style="margin-top:20px">
+    <h2>Tài khoản mẫu</h2>
+    <p><code>admin / Test123!</code> · <code>staff / Test123!</code> · <code>student / Test123!</code></p>
+    <p class="muted">Đổi mật khẩu và chuỗi kết nối cơ sở dữ liệu trước khi triển khai thực tế.</p>
+</section>

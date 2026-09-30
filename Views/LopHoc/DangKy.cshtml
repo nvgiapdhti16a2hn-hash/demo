@@ -1,0 +1,13 @@
+@* Họ và tên: Sinh viên 3 (bổ sung họ tên) | Mã sinh viên: SV3 (bổ sung mã sinh viên) | Nộp hồ sơ đăng ký học *@
+@model EnrollmentViewModel
+@{
+    ViewData["Title"] = "Nộp hồ sơ đăng ký";
+}
+<h1>Nộp hồ sơ đăng ký học</h1>
+<form asp-action="DangKy" method="post" class="form">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="MaLop">Lớp đang nhận hồ sơ</label><select asp-for="MaLop" asp-items="Model.LopDangMo"><option value="">-- Chọn lớp --</option></select><span asp-validation-for="MaLop"></span></div>
+    <div class="field"><label asp-for="LyDoDangKy">Lý do đăng ký</label><textarea asp-for="LyDoDangKy"></textarea><span asp-validation-for="LyDoDangKy"></span></div>
+    <p class="muted">Ngày nộp được hệ thống ghi nhận tự động. Hồ sơ mới sẽ ở trạng thái Chờ duyệt.</p>
+    <button type="submit">Gửi hồ sơ</button>
+</form>

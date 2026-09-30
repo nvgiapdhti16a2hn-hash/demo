@@ -1,0 +1,20 @@
+@model LopHoc
+@{
+    ViewData["Title"] = "Chi tiết lớp học";
+}
+<section class="panel">
+    <h1>@Model.TenLop</h1>
+    <dl class="detail-list">
+        <dt>Chương trình</dt><dd>@Model.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</dd>
+        <dt>Trình độ</dt><dd>@Model.TrinhDoDauVao</dd>
+        <dt>Điểm tối thiểu</dt><dd>@Model.DiemDauVaoToiThieu</dd>
+        <dt>Sĩ số tối đa</dt><dd>@Model.SiSoToiDa</dd>
+        <dt>Ngày bắt đầu</dt><dd>@Model.NgayBatDauDangKy.ToString("dd/MM/yyyy")</dd>
+        <dt>Hạn đăng ký</dt><dd>@Model.HanDangKy.ToString("dd/MM/yyyy")</dd>
+        <dt>Trạng thái</dt><dd>@Model.TrangThai.ToDisplayName()</dd>
+        <dt>Mô tả</dt><dd>@Model.MoTaLopHoc</dd>
+        <dt>Yêu cầu</dt><dd>@Model.YeuCauHocVien</dd>
+    </dl>
+    <a class="button" asp-action="Edit" asp-route-id="@Model.MaLop">Chỉnh sửa</a>
+    <a class="button secondary" asp-action="Index">Quay lại</a>
+</section>

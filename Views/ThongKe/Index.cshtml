@@ -1,0 +1,37 @@
+@model ThongKeViewModel
+@{
+    ViewData["Title"] = "Dashboard và thống kê";
+}
+<h1>Dashboard và thống kê</h1>
+<div class="grid">
+    <div class="stat"><strong>@Model.SoChuongTrinh</strong><span>Chương trình đào tạo</span></div>
+    <div class="stat"><strong>@Model.SoLop</strong><span>Lớp học</span></div>
+    <div class="stat"><strong>@Model.SoHocVien</strong><span>Học viên</span></div>
+    <div class="stat"><strong>@Model.SoHoSo</strong><span>Hồ sơ</span></div>
+    <div class="stat"><strong>@Model.SoHoSoChoDuyet</strong><span>Chờ duyệt</span></div>
+    <div class="stat"><strong>@Model.SoHoSoDuDieuKien</strong><span>Đủ điều kiện</span></div>
+    <div class="stat"><strong>@Model.SoLichSapToi</strong><span>Lịch kiểm tra sắp tới</span></div>
+    <div class="stat"><strong>@Model.SoHocVienDuocXepLop</strong><span>Được xếp lớp</span></div>
+    <div class="stat"><strong>@Model.TyLeXepLop%</strong><span>Tỷ lệ xếp lớp trên số đã kiểm tra</span></div>
+</div>
+<section class="panel" style="margin-top:20px">
+    <h2>Lớp nhận nhiều hồ sơ nhất</h2>
+    <p>@(Model.LopNhanNhieuHoSo ?? "Chưa có dữ liệu") · @Model.SoHoSoCuaLopNhanNhieuNhat hồ sơ</p>
+</section>
+<div class="grid" style="margin-top:20px">
+    <section class="panel"><h2>Số lớp theo chương trình</h2><partial name="_StatTable" model="Model.LopTheoChuongTrinh" /></section>
+    <section class="panel"><h2>Hồ sơ theo lớp</h2><partial name="_StatTable" model="Model.HoSoTheoLop" /></section>
+    <section class="panel"><h2>Hồ sơ đủ điều kiện theo lớp</h2><partial name="_StatTable" model="Model.HoSoDuDieuKienTheoLop" /></section>
+    <section class="panel"><h2>Được xếp lớp theo chương trình</h2><partial name="_StatTable" model="Model.XepLopTheoChuongTrinh" /></section>
+    <section class="panel"><h2>Hồ sơ theo trạng thái</h2><partial name="_StatTable" model="Model.HoSoTheoTrangThai" /></section>
+    <section class="panel"><h2>Hồ sơ nộp theo tháng</h2><partial name="_StatTable" model="Model.HoSoTheoThang" /></section>
+    <section class="panel"><h2>Lịch kiểm tra theo tháng</h2><partial name="_StatTable" model="Model.LichTheoThang" /></section>
+    <section class="panel"><h2>Tỷ lệ đã xét duyệt theo lớp</h2>
+        <div class="table-wrap"><table><thead><tr><th>Lớp</th><th>Đã xét duyệt</th><th>Tổng</th><th>Tỷ lệ</th></tr></thead>
+            <tbody>@foreach (var row in Model.TyLeXetDuyetTheoLop)
+            {
+                <tr><td>@row.Ten</td><td>@row.TuSo</td><td>@row.MauSo</td><td>@row.PhanTram%</td></tr>
+            }</tbody>
+        </table></div>
+    </section>
+</div>

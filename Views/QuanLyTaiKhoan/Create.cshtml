@@ -1,0 +1,14 @@
+@model TaoTaiKhoanViewModel
+@{
+    ViewData["Title"] = "Tạo tài khoản";
+}
+<h1>Tạo tài khoản quản trị / nhân viên</h1>
+<form asp-action="Create" method="post" class="form">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="field"><label asp-for="TenDangNhap">Tên đăng nhập</label><input asp-for="TenDangNhap" /><span asp-validation-for="TenDangNhap"></span></div>
+    <div class="field"><label asp-for="MatKhau">Mật khẩu</label><input asp-for="MatKhau" /><span asp-validation-for="MatKhau"></span></div>
+    <div class="field"><label asp-for="HoTen">Họ tên</label><input asp-for="HoTen" /><span asp-validation-for="HoTen"></span></div>
+    <div class="field"><label asp-for="Email">Email</label><input asp-for="Email" /><span asp-validation-for="Email"></span></div>
+    <div class="field"><label asp-for="VaiTro">Vai trò</label><select asp-for="VaiTro" asp-items="Html.GetEnumSelectList<VaiTro>()"></select><span asp-validation-for="VaiTro"></span></div>
+    <button type="submit">Tạo tài khoản</button>
+</form>

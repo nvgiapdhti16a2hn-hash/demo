@@ -1,0 +1,21 @@
+@* Họ và tên: Sinh viên 3 (bổ sung họ tên) | Mã sinh viên: SV3 (bổ sung mã sinh viên) | Chi tiết hồ sơ của học viên *@
+@model HoSoDangKyHoc
+@{
+    ViewData["Title"] = "Chi tiết hồ sơ";
+}
+<section class="panel">
+    <h1>Hồ sơ #@Model.MaHoSo</h1>
+    <dl class="detail-list">
+        <dt>Học viên</dt><dd>@Model.HocVien?.HoTen</dd>
+        <dt>Lớp</dt><dd>@Model.LopHoc?.TenLop</dd>
+        <dt>Chương trình</dt><dd>@Model.LopHoc?.ChuongTrinhDaoTao?.TenChuongTrinhDaoTao</dd>
+        <dt>Ngày nộp</dt><dd>@Model.NgayNop.ToString("dd/MM/yyyy HH:mm")</dd>
+        <dt>Trạng thái</dt><dd>@Model.TrangThai.ToDisplayName()</dd>
+        <dt>Lý do đăng ký</dt><dd>@Model.LyDoDangKy</dd>
+        <dt>Nhận xét xét duyệt</dt><dd>@Model.NhanXetXetDuyet</dd>
+        <dt>Lịch kiểm tra</dt><dd>@foreach (var exam in Model.LichKiemTras.OrderBy(x => x.ThoiGianBatDau))
+            { <div>@exam.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm") – @exam.ThoiGianKetThuc.ToString("HH:mm"), @exam.DiaDiemHoacLienKet (@exam.TrangThai.ToDisplayName())</div> }</dd>
+        <dt>Kết quả</dt><dd>@(Model.KetQuaXepLop is null ? "Chưa công bố" : Model.KetQuaXepLop.DuocXepLop ? "Được xếp lớp" : "Chưa được xếp lớp")</dd>
+    </dl>
+    <a class="button secondary" asp-action="CuaToi">Quay lại</a>
+</section>
