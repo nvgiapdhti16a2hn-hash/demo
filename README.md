@@ -13,7 +13,9 @@
    dotnet run
    ```
 
-Khi khởi động, ứng dụng áp dụng migration `InitialCreate`. Trong môi trường Development, ứng dụng tạo dữ liệu mẫu và ba tài khoản:
+Khi khởi động, ứng dụng áp dụng các migration. Trong môi trường Development, ứng dụng bổ sung dữ liệu mẫu đến tối thiểu 5 chương trình đào tạo, 15 lớp học, 30 học viên, 45 hồ sơ, 18 lịch kiểm tra và 10 kết quả xếp lớp. Dữ liệu có nhiều trạng thái để kiểm tra các luồng nghiệp vụ. Seed không xóa dữ liệu hiện có.
+
+Tài khoản mẫu dùng chung mật khẩu `Test123!`:
 
 | Vai trò | Tên đăng nhập | Mật khẩu |
 |---|---|---|
@@ -21,7 +23,7 @@ Khi khởi động, ứng dụng áp dụng migration `InitialCreate`. Trong mô
 | Nhân viên đào tạo | `staff` | `Test123!` |
 | Học viên | `student` | `Test123!` |
 
-Tài khoản mẫu chỉ được tạo ở Development. Không sử dụng chúng trong môi trường triển khai.
+Các tài khoản bổ sung gồm `admin02`, `staff02` và học viên `student02` đến `student30`, cũng dùng mật khẩu `Test123!`. Tài khoản mẫu chỉ được tạo ở Development. Không sử dụng chúng trong môi trường triển khai.
 
 ## Chức năng đã dựng
 
